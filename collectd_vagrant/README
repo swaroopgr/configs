@@ -1,0 +1,11 @@
+1. vagrant up
+2. vagrant ssh
+3. wget https://collectd.org/files/collectd-5.5.0.tar.bz2    #collectd sources
+4. ./configure
+5. make all install
+6. Installation can be found under /opt/collectd
+7. Copy the collectd.conf file from this repo to /opt/collectd/etc. This enables logging to logs/collectd.log and also adds collected metrics to this log
+8. mkdir /opt/collectd/logs 
+9. sbin/collectd
+ 
+#will automate the collectd setup soon
