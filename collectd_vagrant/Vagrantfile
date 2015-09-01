@@ -22,7 +22,7 @@ Vagrant.configure(2) do |config|
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
-  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 15672, host: 15672
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -68,6 +68,14 @@ Vagrant.configure(2) do |config|
     # super important hadoop config: a fully qualified host name
     echo 127.0.0.1 $( hostname ).hdp.local $( hostname ) | sudo tee --append /etc/hosts
     sudo apt-get update
+    sudo apt-get install -y git
+    wget https://collectd.org/files/collectd-5.5.0.tar.gz
+    git clone https://github.com/swaroopgr/configs.git
+    tar xzvf collectd-5.5.0.tar.gz
+    cd collectd-5.5.0 && sudo ./configure && sudo make all install
+    sudo cp /home/vagrant/configs/collectd_vagrant/collectd.conf /opt/collectd/etc/collectd.conf
+    sudo mkdir /opt/collectd/logs
+    cd /opt/collectd && sudo nohup sbin/collectd 2>&1 > /opt/collectd/logs/nohup.out & 
 
     # pepperdata build seems to fail...
     #sudo apt-get -y install build-essential git automake gnuplot
